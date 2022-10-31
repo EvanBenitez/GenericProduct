@@ -17,6 +17,10 @@ builder.Services.AddDbContext<GPContext>(opt =>
 
 var app = builder.Build();
 
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<GPContext>();
+await Seed.SeedData(context);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

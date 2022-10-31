@@ -16,7 +16,13 @@ namespace API.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrderedItem>().HasKey(o => new {o.OrderId, o.ProductId});
+            modelBuilder.Entity<OrderedItem>().HasKey(i => new {i.OrderId, i.ProductId});
+            modelBuilder.Entity<OrderedItem>().HasOne(i => i.Order)
+                .WithMany(o => o.OrderedItems)
+                .HasForeignKey(o => o.OrderId);
+            modelBuilder.Entity<OrderedItem>().HasOne(i => i.Product)
+                .WithMany(p => p.OrderedItems)
+                .HasForeignKey(i => i.ProductId);
         }
     }
 }
