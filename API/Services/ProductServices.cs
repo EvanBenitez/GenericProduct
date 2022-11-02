@@ -34,6 +34,9 @@ namespace API.Services
 
         public async Task<int?> AddNewProduct(Product product){
             var newProduct = _context.Products.Add(product);
+
+            // add catagory checking logic
+
             await _context.SaveChangesAsync();
 
             if(newProduct == null) return null;

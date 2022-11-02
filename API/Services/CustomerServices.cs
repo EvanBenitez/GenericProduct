@@ -16,6 +16,8 @@ namespace API.Services
         {
             var newCustomer = _context.Customers.Add(customer);
 
+            // add address checking logic
+
             if(newCustomer == null) return null;
 
             await _context.SaveChangesAsync();
@@ -44,6 +46,9 @@ namespace API.Services
 
             if(customer == null) return false;
 
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync();
+            
             return true;
         }
 

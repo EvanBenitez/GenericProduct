@@ -6,6 +6,6 @@ namespace API.Models
         public string? FirstName { get; set; }
         public string LastName { get; set; }
         public string? email { get; set; }
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
     }
 }
