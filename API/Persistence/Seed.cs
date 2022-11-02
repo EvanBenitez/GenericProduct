@@ -8,7 +8,6 @@ namespace API.Persistence
         {
             await SeedCatagory(context);
             await SeedProduct(context);
-            await context.SaveChangesAsync();
         }
 
         private static async Task SeedCatagory(GPContext context)
@@ -23,6 +22,7 @@ namespace API.Persistence
             };
 
             await context.AddRangeAsync(catagories);
+            await context.SaveChangesAsync();
         }
 
         private static async Task SeedProduct(GPContext context){
@@ -54,6 +54,7 @@ namespace API.Persistence
             };
 
             await context.Products.AddRangeAsync(products);
+            await context.SaveChangesAsync();
         }
     }
 }
