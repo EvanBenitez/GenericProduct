@@ -19,6 +19,7 @@ builder.Services.AddDbContext<GPContext>(opt =>
 // add injections
 builder.Services.AddScoped<IProductServices, ProductServices>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
+builder.Services.AddScoped<IOrderServices, OrderServices>();
 
 var app = builder.Build();
 

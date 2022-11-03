@@ -10,6 +10,80 @@ namespace API.Persistence
             await SeedAddress(context);
             await SeedProduct(context);
             await SeedCustomer(context);
+            await SeedOrder(context);
+            await SeedOrderedItems(context);
+        }
+
+        private static async Task SeedOrderedItems(GPContext context)
+        {
+            if(context.OrderedItems.Any()) return;
+
+            var products = context.Products.ToList();
+            var orders = context.Orders.ToList();
+
+            var orderedItems = new List<OrderedItem>{
+                new OrderedItem {
+                    ProductId = products[0].Id,
+                    OrderId = orders[0].Id,
+                    Quantity = 1
+                },
+                new OrderedItem {
+                    ProductId = products[1].Id,
+                    OrderId = orders[0].Id,
+                    Quantity = 1
+                },
+                new OrderedItem {
+                    ProductId = products[2].Id,
+                    OrderId = orders[1].Id,
+                    Quantity = 1
+                },
+                new OrderedItem {
+                    ProductId = products[0].Id,
+                    OrderId = orders[2].Id,
+                    Quantity = 1
+                },
+                new OrderedItem {
+                    ProductId = products[1].Id,
+                    OrderId = orders[3].Id,
+                    Quantity = 1
+                }
+            };
+
+            context.AddRange(orderedItems);
+            await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedOrder(GPContext context)
+        {
+            if(context.Orders.Any()) return;
+
+            var customers = context.Customers.ToList();
+
+            var orders = new List<Order>{
+                new Order{
+                    Customer = customers[0],
+                    OrderDate = DateTime.Now,
+                    // OrderedItems = new List<OrderedItem>()
+                },
+                new Order{
+                    Customer = customers[1],
+                    OrderDate = DateTime.Now,
+                    // OrderedItems = new List<OrderedItem>()
+                },
+                new Order{
+                    Customer = customers[0],
+                    OrderDate = DateTime.Now,
+                    // OrderedItems = new List<OrderedItem>()
+                },
+                new Order{
+                    Customer = customers[2],
+                    OrderDate = DateTime.Now,
+                    // OrderedItems = new List<OrderedItem>()
+                }
+            };
+
+            context.AddRange(orders);
+            await context.SaveChangesAsync();
         }
 
         private static async Task SeedAddress(GPContext context)
