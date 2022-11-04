@@ -23,6 +23,15 @@ namespace API.Persistence
             modelBuilder.Entity<OrderedItem>().HasOne(i => i.Product)
                 .WithMany(p => p.OrderedItems)
                 .HasForeignKey(i => i.ProductId);
+
+            modelBuilder.Entity<Product>().HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId);
+
+            modelBuilder.Entity<Customer>().HasOne(c => c.Address)
+                .WithMany(a => a.Customers)
+                .HasForeignKey(c => c.AddressId);
         }
+
     }
 }

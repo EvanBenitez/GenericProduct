@@ -14,12 +14,12 @@ namespace API.Services
         }
         public async Task<int?> AddNewOrder(Order order)
         {
-            var orderEntry = _context.Orders.Add(order);
+            Order? newOrder = await CreateOrder(order);
+            if(newOrder == null) return null;
 
-            if(orderEntry == null) return null;
+            await CreateOrderedItems(order, newOrder.Id);
 
-            await _context.SaveChangesAsync();
-            return orderEntry.Entity.Id;
+            return newOrder.Id;
         }
 
         public async Task<IEnumerable<Order>> GetAllOrders()
@@ -56,11 +56,45 @@ namespace API.Services
 
             oldOrder.Customer = order.Customer ?? oldOrder.Customer;
             oldOrder.OrderDate = order.OrderDate;
-            oldOrder.OrderedItems = order.OrderedItems ?? oldOrder.OrderedItems;
+
+            if(order.OrderedItems != null){
+                var newOrderItems = new List<OrderedItem>();
+                foreach(var item in order.OrderedItems){
+                    item.OrderId = order.Id;
+                    newOrderItems.Add(item);
+                }
+                oldOrder.OrderedItems = order.OrderedItems;
+            }
 
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<Order?> CreateOrder(Order order){
+            Order newOrder = new Order{
+                Customer = order.Customer,
+                OrderDate = order.OrderDate
+            };
+
+            var orderEntry = _context.Orders.Add(newOrder);
+
+            if(orderEntry == null) return null;
+
+            await _context.SaveChangesAsync();
+
+            return orderEntry.Entity;
+        }
+
+        private async Task CreateOrderedItems(Order order, int id){
+            if(order.OrderedItems != null && order.OrderedItems.Count() > 0)
+            {
+                foreach(var item in order.OrderedItems){
+                    item.OrderId = id;
+                    _context.OrderedItems.Add(item);
+                }
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

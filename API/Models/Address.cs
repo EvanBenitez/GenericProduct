@@ -8,5 +8,6 @@ namespace API.Models
         public int ZipCode { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public virtual List<Customer>? Customers { get; set; }
     }
 }
