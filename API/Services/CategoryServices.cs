@@ -48,9 +48,17 @@ namespace API.Services
             return true;
         }
 
-        public Task<bool> UpdateCategory(Category category)
+        public async Task<bool> UpdateCategory(Category category)
         {
-            throw new NotImplementedException();
+            Category? oldCategory = await _context.Categories.FindAsync(category.Id);
+
+            if(oldCategory == null) return false;
+
+            oldCategory.Name = category.Name ?? oldCategory.Name;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

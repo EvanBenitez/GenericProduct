@@ -176,6 +176,12 @@ namespace API.Persistence
             {
                 new Category{
                     Name = "Baseball"
+                },
+                 new Category{
+                    Name = "Hockey"
+                },
+                 new Category{
+                    Name = "Basketball"
                 }
             };
 

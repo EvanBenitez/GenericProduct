@@ -20,8 +20,17 @@ builder.Services.AddDbContext<GPContext>(opt =>
 builder.Services.AddScoped<IProductServices, ProductServices>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
 builder.Services.AddScoped<IOrderServices, OrderServices>();
+builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy =>{
+        policy.AllowAnyOrigin().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
+
+app.UseCors();
 
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<GPContext>();
